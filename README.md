@@ -22,3 +22,7 @@ The timestamp for when items are added or modified are added to the 'inventory' 
 -----------
 I use DB Browser (SQLite) to look at the the database outside of Excel. While there shouldn't be bugs, this should be a helpful tool in looking at the SQLite tables when trying to change or debug the code.
 https://sqlitebrowser.org/
+
+-----------
+
+To take off the Footer message with my name and contact, click the gray area underneath.
