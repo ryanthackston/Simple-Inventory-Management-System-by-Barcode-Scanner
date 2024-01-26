@@ -18,3 +18,7 @@ This is your main program and you can add/modify/delete inventory by clicking on
 Customers will use 'Checkout Items' when they are buying. They need to scan each item with the barcode scanner and input the quantity. A calculated price is given and when they pay for the items and they can checkout when they are ready to pay for the items.
 
 The timestamp for when items are added or modified are added to the 'inventory' table and the timestamp for every checkout is added to the 'transactions' table.
+
+-----------
+I use DB Browser (SQLite) to look at the the database outside of Excel. While there shouldn't be bugs, this should be a helpful tool in looking at the SQLite tables when trying to change or debug the code.
+https://sqlitebrowser.org/
