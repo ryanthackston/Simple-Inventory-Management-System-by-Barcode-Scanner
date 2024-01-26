@@ -9,7 +9,7 @@ class inventoryWindowClass:
 # Main Window
     def __init__(self, root):
         self.root = root
-        self.root.geometry("800x450")
+        self.root.geometry("550x450")
         self.root.title("Inventory Summary")
 
         ##############################################################################
@@ -41,6 +41,9 @@ class inventoryWindowClass:
         ########################################################
         # Add Record to the database
         ########################################################
+
+        space_row_1 = tk.Label(second_frame, text=' ', font=('Times New Roman', 7))
+        space_row_1.grid(row=1, column=4, pady=0)
 
         item_barcode = tk.Entry(second_frame, width=20)
         item_barcode.grid(row=2, column=1, pady=1, sticky=tk.W)

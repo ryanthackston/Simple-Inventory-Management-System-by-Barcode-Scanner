@@ -9,7 +9,7 @@ class checkoutWindowClass:
 # Main Window
     def __init__(self, root):
         self.root = root
-        self.root.geometry("800x550")
+        self.root.geometry("700x550")
         self.root.title("Checkout Window")
 
          # Create A Main Frame
@@ -37,23 +37,26 @@ class checkoutWindowClass:
 
         # Add Record to the database
 
-        space_first = tk.Label(second_frame, text='   ')
-        space_first.grid(row=3, column=3, pady=4)
+        space_row_1 = tk.Label(second_frame, text=' ', font=('Times New Roman', 40))
+        space_row_1.grid(row=1, column=4, pady=0)
 
-        space_second = tk.Label(second_frame, text='   ')
-        space_second.grid(row=4, column=3, pady=4)
+        space_label = tk.Label(second_frame, text='  ', font=('Times New Roman', 10))
+        space_label.grid(row=2, column=4, pady=0)
+
+       # space_entry = tk.Label(second_frame, text='       ', font=('Times New Roman', 10))
+        #space_entry.grid(row=4, column=5, pady=0)
 
         item_barcode_label = tk.Label(second_frame, text='Barcode ')
-        item_barcode_label.grid(row=3, column=4, pady=4, padx=5)
+        item_barcode_label.grid(row=3, column=4, padx=(10,0))
 
         item_barcode3 = tk.Entry(second_frame, width=20)
-        item_barcode3.grid(row=4, column=4, pady=4, padx=5)
+        item_barcode3.grid(row=4, column=4, padx=(10,0))
 
         item_quantity_label = tk.Label(second_frame, text='Quantity ')
-        item_quantity_label.grid(row=3, column=5, pady=4, padx=5)
+        item_quantity_label.grid(row=3, column=4, padx=(275,0) )
 
         item_quantity = tk.Entry(second_frame, width=20)
-        item_quantity.grid(row=4, column=5, pady=4, padx=5)
+        item_quantity.grid(row=4, column=4, padx=(275,0))
 
         my_tree = ttk.Treeview(second_frame)
 
@@ -76,7 +79,9 @@ class checkoutWindowClass:
 
         # Add Data
         # my_tree.insert(parent='', index='end', iid=0, text="", values=("Doritos", 2.50, 3, 1432586790))
-        my_tree.grid(row=6, column=2, columnspan = 6, pady=20, padx=30, sticky=tk.E)
+        space_tree = tk.Label(second_frame, text='     ', font=('Times New Roman', 40))
+        space_tree.grid(row=6, column=1, columnspan=2, pady=4)
+        my_tree.grid(row=6, column=4, columnspan = 9, pady=20, padx=(30, 0), sticky=tk.E)
 
         # Match barcode and quantity with items already in inventory
         def checkInventory():
@@ -137,7 +142,7 @@ class checkoutWindowClass:
                 
 
         addToList = tk.Button(second_frame, text='Add To List', command = buyList)
-        addToList.grid(row=4, column=6, pady=4, sticky=tk.W)
+        addToList.grid(row=4, column=7, pady=4, sticky=tk.W)
         
         def calcTotal():
             price = 0
@@ -153,12 +158,16 @@ class checkoutWindowClass:
                 print(is_iid) """
 
             totalLabel = tk.Label(second_frame, text = "Your total is: $" + str(price))
-            totalLabel.grid(row=13, column=5, pady=4)
+            totalLabel.grid(row=13, column=4, padx = (250,0), pady=4)
             pass
 
-        calcTotalButton = tk.Button(second_frame, text='Calculate Total', command=calcTotal)
-        calcTotalButton.grid(row=9, column=5, pady=4)
+        
 
+        calcTotalButton = tk.Button(second_frame, text='Calculate Total', command=calcTotal)
+        calcTotalButton.grid(row=9, column=4,  padx = (150,0), pady=4)
+        
+        # space_row_9 = tk.Label(second_frame, text='                          ')
+        # space_row_9.grid(row=9, column=4, pady=4, padx = 0)
 
         def checkoutFinal():
             for item in my_tree.get_children():
@@ -184,7 +193,7 @@ class checkoutWindowClass:
 
 
                 cursor.execute("""INSERT INTO transactions(barcode, name, price, quantity, category, supplier, last_check_in)
-                                SELECT barcode, name, price, quantity, category, supplier, last_check_in 
+                                SELECT barcode, name, price, quantity, category, supplier, last_check_in
                                 FROM inventory
                                 WHERE barcode = ?""", (iid,) )
 
@@ -193,9 +202,9 @@ class checkoutWindowClass:
                                 quantity = ?,
                                 last_check_in = ?
                                
-                                WHERE barcode = ? """, (boughtQuantity, 
-                                                       (datetime.now().strftime("%d-%m-%Y %H:%M:%S")), 
-                                                        iid,) )
+                                WHERE ROWID IN ( SELECT max( ROWID ) FROM transactions ) """, 
+                                (boughtQuantity, 
+                                (datetime.now().strftime("%d-%m-%Y %H:%M:%S")), ) )
                 
 #                cursor.execute("""UPDATE transactions
 #                                    SET
@@ -211,7 +220,7 @@ class checkoutWindowClass:
                 
 
         checkoutButton = tk.Button(second_frame, text='Checkout', command=checkoutFinal)
-        checkoutButton.grid(row=10, column=5, pady=4)
+        checkoutButton.grid(row=10, column=4, padx = (150,0), pady=4)
 
 if __name__=="__main__":
     root=tk.Tk()
