@@ -7,9 +7,12 @@ from PIL import Image, ImageTk # Pillow library # pip istall pillow
 from datetime import datetime
 import sqlite3
 import pandas as pd
-from sqlalchemy import create_engine, inspect
+from sqlalchemy import create_engine
 from inventory_window import inventoryWindowClass
 from checkout_window import checkoutWindowClass
+import os
+
+root=tk.Tk()
 
 class IMS:
     def __init__(self, root):
@@ -28,6 +31,7 @@ class IMS:
                         font=("times new roman", 40, "bold"), 
                         bg="#010c48", fg="white", anchor="w", padx=20).place(x=0, y=0, relwidth=1, height=70)
         
+
         # Logout Button - Closes window
         logoutButton=tk.Button(self.root, 
                                text="Logout", 
@@ -36,13 +40,11 @@ class IMS:
                                font=("times new roman", 15, "bold"),
                                bg="red",
                                cursor="hand2").place(x=1175, y=10,height=50,width=150)
-        
-        def logout():
-            logoutButton
+
 
         # Clock - Displays Time
         self.labelClock=tk.Label(self.root, 
-                        text="Welcome \t\t Date: \t\t Time: HH-MM-SS",
+                        text="Welcome \t\t Date: D-M-Y \t\t Time: HH-MM-SS",
                         font=("times new roman", 15, "bold"), 
                         bg="#4d636d", fg="white")
         self.labelClock.place(x=0, y=70, relwidth=1, height=30)
@@ -50,9 +52,10 @@ class IMS:
         def update_datetime():
             current_date = datetime.now().strftime("%d-%m-%Y")
             current_time = datetime.now().strftime("%H:%M:%S")
-            self.labelClock.config(text="Welcome \t\t " + "Date: " + current_date + "\t\t Time: " + current_time)
+            self.labelClock.config(text=f"Welcome \t\t " + "Date: " + (current_date) + "\t\t Time: " + (current_time))  
             self.labelClock.after(1000, update_datetime)  # Update time every 1000ms (1 second)
-
+        root.after(1000, update_datetime())
+        
         # Left Menu
         self.menuLogo= Image.open("Images/finger_kiss.png")
         self.menuLogo=self.menuLogo.resize((200,150))
@@ -150,7 +153,8 @@ class IMS:
                     messagebox.showinfo("Success", "Password accepted!")
                     print("Password accepted!")
 
-                    self.root=inventoryWindowClass(self.root)            
+                    self.root=inventoryWindowClass(self.root)  
+                    pass_window.destroy()          
                 else:
                     messagebox.showerror("Error", "Incorrect password!")
                     print("Password rejected!")
@@ -192,13 +196,10 @@ class IMS:
 
 
         def export_to_excel():
-            filepath = 'D:\Inventory Managment Project\IEEE_Shop_Excel_Data'
-
             # Connect to the database
             connection = sqlite3.connect("IEEE_Shop.db")
             # write the data into excel file
-            engine = create_engine("sqlite:///D:\\Inventory Managment Project\\IEEE_Shop.db")
-            insp = inspect(engine)
+            engine = create_engine("sqlite:///D:\\Simple-Inventory-Management-System-by-Barcode-Scanner\\IEEE_Shop.db")
             # table_names = insp.get_table_names
             # dataframe
             inventory_df = pd.read_sql("SELECT * FROM inventory", engine)
@@ -240,10 +241,14 @@ class IMS:
         labelFooterlock.pack(side=tk.BOTTOM, fill=tk.X) 
 
 
-        
-
-
-
-root=tk.Tk()
+"""     def update_content(self):
+        try: 
+            current_date = datetime.now().strftime("%d-%m-%Y")
+            current_time = datetime.now().strftime("%H:%M:%S")
+            self.labelClock.config(text=f"Welcome \t\t " + "Date: " + {str(current_date)} + "\t\t Time: " + {str(current_time)})  
+            self.labelClock.after(1000, self.update_content)  # Update time every 1000ms (1 second)
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to :" + {str(ex)}, parent=self.root)
+ """
 obj=IMS(root)
 root.mainloop()
