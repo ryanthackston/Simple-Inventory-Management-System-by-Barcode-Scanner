@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-#from tkinter import Text, Scrollbar, Canvas, Frame
 import sqlite3
 from   datetime import datetime
 

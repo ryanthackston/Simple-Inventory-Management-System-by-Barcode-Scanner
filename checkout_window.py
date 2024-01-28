@@ -83,6 +83,8 @@ class checkoutWindowClass:
         space_tree.grid(row=6, column=1, columnspan=2, pady=4)
         my_tree.grid(row=6, column=4, columnspan = 9, pady=20, padx=(30, 0), sticky=tk.E)
 
+       
+
         # Match barcode and quantity with items already in inventory
         def checkInventory():
             # Check with try / except
@@ -137,13 +139,27 @@ class checkoutWindowClass:
                 # insert entry into Treeview list with identifying id as the barcode entry
                 my_tree.insert(parent='', index='end', iid=item_barcode3.get(), text="", values = (rec[1], rec[2], item_quantity.get(), rec[0]) )
                 
-                # TO DO - Show on GUI
-                print("Successfully added entry to checkout list")
-                
+                # Clear the boxes
+                item_barcode3.delete(0, tk.END)
+                item_quantity.delete(0, tk.END)
 
+                # TO DO - Show on GUI
+                # print("Successfully added entry to checkout list")
+                
+        # Add Item to Cart List Button
         addToList = tk.Button(second_frame, text='Add To List', command = buyList)
         addToList.grid(row=4, column=7, pady=4, sticky=tk.W)
-        
+
+        # Remove Selected Item
+        def remove_selected():
+            x = my_tree.selection()
+            for record in x:
+                my_tree.delete(record)
+
+        # Remove Items Button
+        removeItems = tk.Button(second_frame, text="Remove Items", command=remove_selected)
+        removeItems.grid(row=8, column=4, padx = (150,0), pady=4)
+
         def calcTotal():
             price = 0
             for item in my_tree.get_children():
@@ -159,7 +175,6 @@ class checkoutWindowClass:
 
             totalLabel = tk.Label(second_frame, text = "Your total is: $" + str(price))
             totalLabel.grid(row=13, column=4, padx = (250,0), pady=4)
-            pass
 
         
 
