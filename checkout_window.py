@@ -137,7 +137,7 @@ class checkoutWindowClass:
                 else:
                     pass
                 # insert entry into Treeview list with identifying id as the barcode entry
-                my_tree.insert(parent='', index='end', iid=item_barcode3.get(), text="", values = (rec[1], rec[2], item_quantity.get(), rec[0]) )
+                my_tree.insert(parent='', index='end', iid=str(item_barcode3.get()), text="", values = (rec[1], rec[2], item_quantity.get(), str(rec[0])) )
                 
                 # Clear the boxes
                 item_barcode3.delete(0, tk.END)
@@ -184,10 +184,13 @@ class checkoutWindowClass:
         # space_row_9 = tk.Label(second_frame, text='                          ')
         # space_row_9.grid(row=9, column=4, pady=4, padx = 0)
 
+# BUG IN CODE - 0s in Front mess up Checkout
         def checkoutFinal():
             for item in my_tree.get_children():
+                
                 item_info = my_tree.item(item)
-                iid = item_info['values'][3]
+
+                iid = item
                 is_iid = my_tree.exists(iid)
                 print ("iid = ", iid, "Quantity = ", item_info['values'][2])
                 print(is_iid)

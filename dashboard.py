@@ -1,4 +1,3 @@
-
 # Running on Python 3.9.5
 
 import tkinter as tk           # Tkinter GUI library # Comes with python
