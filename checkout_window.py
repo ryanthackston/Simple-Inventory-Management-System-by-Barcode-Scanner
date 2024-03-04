@@ -249,7 +249,7 @@ class checkoutWindowClass:
                 # Update the quantity in inventory after checkout 
                 cursor.execute("UPDATE inventory SET quantity = ? WHERE barcode = ?" , (updatedQuantity, iid,))
 
-                # Insert values into the transactions table
+                # Insert values into the transactions table 
                 cursor.execute("""INSERT INTO transactions(barcode, name, price, quantity, category, supplier, last_check_in)
                                 SELECT barcode, name, price, quantity, category, supplier, last_check_in
                                 FROM inventory
