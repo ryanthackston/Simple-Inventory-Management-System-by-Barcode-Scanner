@@ -19,7 +19,7 @@ class adminClass:
                         font=("times new roman", 40, "bold"), 
                         bg="#010c48", fg="white", anchor="w", padx=20).place(x=0, y=0, relwidth=1, height=70)
         
-        # Logout Button
+        # Logout Button 
         logoutButton=tk.Button(self.root, 
                                text="Logout", 
                                compound=tk.RIGHT, 

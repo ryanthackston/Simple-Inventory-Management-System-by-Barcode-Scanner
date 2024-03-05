@@ -237,7 +237,7 @@ class checkoutWindowClass:
                 connection = sqlite3.connect("IEEE_Shop.db")
                 cursor = connection.cursor()
 
-                # Select items by Barcode which is being used as the IID
+                # Select items by Barcode which is being used as the IID 
                 cursor.execute("SELECT quantity FROM inventory WHERE barcode = ?",(iid,))
                 currentQuantity = (cursor.fetchall())[0][0]
 
