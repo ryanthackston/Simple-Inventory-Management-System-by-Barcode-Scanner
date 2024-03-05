@@ -5,7 +5,7 @@ from   datetime import datetime
 
 class inventoryWindowClass:
 
-# Main Window
+# Main Window 
     def __init__(self, root):
         self.root = root
         self.root.geometry("550x450")
