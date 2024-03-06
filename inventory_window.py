@@ -170,130 +170,135 @@ class inventoryWindowClass:
         # Call value in the barcode entry box
         def get_barcode():
             if item_barcode2.get() == '':
-                error_label = tk.Label(second_frame,  text='')
-                error_label.grid(row=18, column=0, pady=2, sticky=tk.E)
+                raise ValueError('Error: You didnt input a barcode')
             else:
                 return item_barcode2.get()
 
 
         # Create Edit Function to update inventory
         def edit():
-            
-            def update():
-                connection = sqlite3.connect("IEEE_Shop.db")
-                cursor = connection.cursor()
+            try:
                 record_id = get_barcode()
 
-                cursor.execute(
-                    """ UPDATE inventory SET
-                        name = :name,
-                        price = :price, 
-                        quantity = :quantity, 
-                        category = :category, 
-                        supplier = :supplier, 
-                        timestamp = :timestamp
+                def update():
+                    record_id = get_barcode()
+                    connection = sqlite3.connect("IEEE_Shop.db")
+                    cursor = connection.cursor()
 
-                        WHERE barcode = :barcode""",
-                    {
-                        'name': item_name_entry.get(),
-                        'price': item_price_entry.get(),
-                        'quantity': item_quantity_entry.get(),
-                        'category': item_category_entry.get(),
-                        'supplier': item_supplier_entry.get(),
-                        'timestamp':(datetime.now().strftime("%d-%m-%Y %H:%M:%S")),
+                    cursor.execute(
+                        """ UPDATE inventory SET
+                            name = :name,
+                            price = :price, 
+                            quantity = :quantity, 
+                            category = :category, 
+                            supplier = :supplier, 
+                            timestamp = :timestamp
 
-                        'barcode': record_id})
-                print("Sucessfully updated inventory")
+                            WHERE barcode = :barcode""",
+                        {
+                            'name': item_name_entry.get(),
+                            'price': item_price_entry.get(),
+                            'quantity': item_quantity_entry.get(),
+                            'category': item_category_entry.get(),
+                            'supplier': item_supplier_entry.get(),
+                            'timestamp':(datetime.now().strftime("%d-%m-%Y %H:%M:%S")),
+
+                            'barcode': record_id})
+                    print("Sucessfully updated inventory")
+                    
+                    connection.commit()
+                    connection.close()
+
+                editor = tk.Tk()
+                editor.geometry("750x400")
+                editor.title("Edit Inventory")
+
+                connection = sqlite3.connect("IEEE_Shop.db")
+                cursor = connection.cursor()
+
+                cursor.execute("SELECT * FROM inventory WHERE barcode = " + record_id)
+                records = cursor.fetchall()
+
+                # Create Text Boxes
+                item_barcode_editor = tk.Entry(editor, width=20)
+                item_barcode_editor.grid(row=0, column=1, sticky=tk.W)
                 
+                def item_barcode_entry():
+                    return item_barcode_editor
+                ##########
+                item_name_editor = tk.Entry(editor, width=20)
+                item_name_editor.grid(row=1, column=1, sticky=tk.W)
+
+                def item_name_entry():
+                    return item_name_editor
+                ##########
+                item_price_editor = tk.Entry(editor, width=20)
+                item_price_editor.grid(row=2, column=1, sticky=tk.W)
+
+                def item_price_entry():
+                    return item_price_editor
+                ##########
+                item_quantity_editor = tk.Entry(editor, width=20)
+                item_quantity_editor.grid(row=3, column=1, sticky=tk.W)
+
+                def item_quantity_entry():
+                    return item_quantity_editor
+                ##########
+                item_category_editor = tk.Entry(editor, width=20)
+                item_category_editor.grid(row=4, column=1, sticky=tk.W)
+
+                def item_category_entry():
+                    return item_category_editor
+                ##########
+                item_supplier_editor = tk.Entry(editor, width=20)
+                item_supplier_editor.grid(row=5, column=1, sticky=tk.W)
+                
+                def item_supplier_entry():
+                    return item_supplier_editor
+                ##########
+                item_timestamp_editor = tk.Entry(editor, width=20, state=tk.DISABLED)
+                item_timestamp_editor.grid(row=6, column=1, sticky=tk.W)    
+
+                def item_timestamp_entry():
+                    return item_timestamp_editor                                
+                ##########
+                
+                # Create Text Box Labels  
+                item_barcode_label = tk.Label(editor, text='Barcode ')
+                item_barcode_label.grid(row=0, column=0, sticky=tk.E)
+                item_name_label = tk.Label(editor, text='Name ')
+                item_name_label.grid(row=1, column=0, sticky=tk.E)
+                item_price_label = tk.Label(editor, text ='Price ($) ')
+                item_price_label.grid(row=2,column=0, sticky=tk.E) 
+                item_quantity_label = tk.Label(editor,  text='Quantity ')
+                item_quantity_label.grid(row=3, column=0, sticky=tk.E)
+                item_category_label = tk.Label(editor, text ='Category ')
+                item_category_label.grid(row=4,column=0, sticky=tk.E)
+                item_supplier_label = tk.Label(editor, text ='Supplier ')
+                item_supplier_label.grid(row=5,column=0, sticky=tk.E)
+                item_timestamp_label = tk.Label(editor, text ='Last Check-In ')
+                item_timestamp_label.grid(row=6,column=0, sticky=tk.E)
+
+                # Loop through results
+                for data in records:
+                    item_barcode_entry().insert(0, data[0])
+                    item_name_entry().insert(0, data[1])
+                    item_price_entry().insert(0, data[2])
+                    item_quantity_entry().insert(0, data[3])
+                    item_category_entry().insert(0, data[4])
+                    item_supplier_entry().insert(0, data[5])
+                    item_timestamp_entry().insert(0, data[6])
+
+                # Create a Save button to save edited record
+                edit_btn = tk.Button(editor, text="Save Record", command=update)
+                edit_btn.grid(row=11, column=0, columnspan=2, pady=10, padx=10, ipadx=80)
                 connection.commit()
                 connection.close()
 
-            editor = tk.Tk()
-            editor.geometry("750x400")
-            editor.title("Edit Inventory")
-
-            connection = sqlite3.connect("IEEE_Shop.db")
-            cursor = connection.cursor()
-
-            record_id = get_barcode()
-            cursor.execute("SELECT * FROM inventory WHERE barcode = " + record_id)
-            records = cursor.fetchall()
-
-            # Create Text Boxes
-            item_barcode_editor = tk.Entry(editor, width=20)
-            item_barcode_editor.grid(row=0, column=1, sticky=tk.W)
-            
-            def item_barcode_entry():
-                return item_barcode_editor
-            ##########
-            item_name_editor = tk.Entry(editor, width=20)
-            item_name_editor.grid(row=1, column=1, sticky=tk.W)
-
-            def item_name_entry():
-                return item_name_editor
-            ##########
-            item_price_editor = tk.Entry(editor, width=20)
-            item_price_editor.grid(row=2, column=1, sticky=tk.W)
-
-            def item_price_entry():
-                return item_price_editor
-            ##########
-            item_quantity_editor = tk.Entry(editor, width=20)
-            item_quantity_editor.grid(row=3, column=1, sticky=tk.W)
-
-            def item_quantity_entry():
-                return item_quantity_editor
-            ##########
-            item_category_editor = tk.Entry(editor, width=20)
-            item_category_editor.grid(row=4, column=1, sticky=tk.W)
-
-            def item_category_entry():
-                return item_category_editor
-            ##########
-            item_supplier_editor = tk.Entry(editor, width=20)
-            item_supplier_editor.grid(row=5, column=1, sticky=tk.W)
-            
-            def item_supplier_entry():
-                return item_supplier_editor
-            ##########
-            item_timestamp_editor = tk.Entry(editor, width=20, state=tk.DISABLED)
-            item_timestamp_editor.grid(row=6, column=1, sticky=tk.W)    
-
-            def item_timestamp_entry():
-                return item_timestamp_editor                                
-            ##########
-            
-            # Create Text Box Labels  
-            item_barcode_label = tk.Label(editor, text='Barcode ')
-            item_barcode_label.grid(row=0, column=0, sticky=tk.E)
-            item_name_label = tk.Label(editor, text='Name ')
-            item_name_label.grid(row=1, column=0, sticky=tk.E)
-            item_price_label = tk.Label(editor, text ='Price ($) ')
-            item_price_label.grid(row=2,column=0, sticky=tk.E) 
-            item_quantity_label = tk.Label(editor,  text='Quantity ')
-            item_quantity_label.grid(row=3, column=0, sticky=tk.E)
-            item_category_label = tk.Label(editor, text ='Category ')
-            item_category_label.grid(row=4,column=0, sticky=tk.E)
-            item_supplier_label = tk.Label(editor, text ='Supplier ')
-            item_supplier_label.grid(row=5,column=0, sticky=tk.E)
-            item_timestamp_label = tk.Label(editor, text ='Last Check-In ')
-            item_timestamp_label.grid(row=6,column=0, sticky=tk.E)
-
-            # Loop through results
-            for data in records:
-                item_barcode_entry().insert(0, data[0])
-                item_name_entry().insert(0, data[1])
-                item_price_entry().insert(0, data[2])
-                item_quantity_entry().insert(0, data[3])
-                item_category_entry().insert(0, data[4])
-                item_supplier_entry().insert(0, data[5])
-                item_timestamp_entry().insert(0, data[6])
-
-            # Create a Save button to save edited record
-            edit_btn = tk.Button(editor, text="Save Record", command=update)
-            edit_btn.grid(row=11, column=0, columnspan=2, pady=10, padx=10, ipadx=80)
-            connection.commit()
-            connection.close()
+            except ValueError:
+                print("Not a valid barcode input! Try again")
+                error_label = tk.Label(second_frame, text='Error: Enter a valid barcode')
+                error_label.grid(row=16, column=0, pady=10, sticky=tk.E)
 
         edit_btn = tk.Button(second_frame, text="Edit Inventory By Barcode", command=edit)
         edit_btn.grid(row=14, column=0, columnspan=2, pady=10, padx=10, ipadx=30)
