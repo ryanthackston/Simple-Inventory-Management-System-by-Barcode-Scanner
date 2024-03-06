@@ -250,15 +250,15 @@ class checkoutWindowClass:
                 cursor.execute("UPDATE inventory SET quantity = ? WHERE barcode = ?" , (updatedQuantity, iid,))
 
                 # Insert values into the transactions table 
-                cursor.execute("""INSERT INTO transactions(barcode, name, price, quantity, category, supplier, last_check_in)
-                                SELECT barcode, name, price, quantity, category, supplier, last_check_in
+                cursor.execute("""INSERT INTO transactions(barcode, name, price, quantity, category, supplier, timestamp)
+                                SELECT barcode, name, price, quantity, category, supplier, timestamp
                                 FROM inventory
                                 WHERE barcode = ?""", (iid,) )
 
                 # Add a timestamp to each transaction of items
                 cursor.execute("""UPDATE transactions SET
                                 quantity = ?,
-                                last_check_in = ?
+                                timestamp = ?
                                
                                 WHERE ROWID IN ( SELECT max( ROWID ) FROM transactions ) """, 
                                 (boughtQuantity, 

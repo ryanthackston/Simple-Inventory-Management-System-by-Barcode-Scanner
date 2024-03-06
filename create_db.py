@@ -11,7 +11,7 @@ def create_db():
                    quantity INTEGER, 
                    category TEXT, 
                    supplier TEXT, 
-                   last_check_in TEXT)
+                   timestamp TEXT)
                    """ )
     print("Table created successfully")
     conn.commit()
@@ -29,7 +29,7 @@ def create_transactions_table():
                    quantity INTEGER, 
                    category TEXT, 
                    supplier TEXT, 
-                   last_check_in TEXT)
+                   timestamp TEXT)
                    """ )
     print("Table created successfully")
     conn.commit()

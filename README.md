@@ -1,19 +1,22 @@
 A Simple Database Management System to monitor Inoventory via barcode!
 
-To start using, download the file and Unzip in a folder of your choice.
+When using a Raspberry Pi, make sure you're running the latest OS. You can check the latest OS version here:
+https://www.raspberrypi.com/software/operating-systems/ 
+
+To start using the inventory DBS, download the file and Unzip in a folder of your choice.
 
 Use a Python source code editor or IDE and set your workspace to the file you unzipped to (my preferred one is Visual Studio Code)
 
-You will need to use
+You will need to have some libraries installed, the command is:
 pip install tkinter, sqlite3, pillow, pandas, SQLAlchemy
 
 This code was made using Python 3.9.5 but any version 3.9 and above should work.
 
 First Run create_db.py . You won't be able to run this again if there is a database with the same name in your folder
 
-Next run dashboard.py . 
+Next run dashboard.py
 
-This is your main program and you can add/modify/delete inventory by clicking on 'Admin Only' and putting in the password. The default password is 12345.
+dashboard.py your main program and you can add/modify/delete inventory by clicking on 'Admin Only' and putting in the password. The default password is 12345.
 
 Customers will use 'Checkout Items' when they are buying. They need to scan each item with the barcode scanner and input the quantity. A calculated price is given and when they pay for the items and they can checkout when they are ready to pay for the items.
 
