@@ -187,10 +187,14 @@ class checkoutWindowClass:
 
         # Function - Removes selected items in checkout 
         def remove_selected():
+            # For Loop code
             # x = my_tree.selection()
             # for record in x:
             #     my_tree.delete(record)
+
+            # map-lambda code
             list(map(lambda x: my_tree.delete(x), my_tree.selection()))
+            # List comprehension code
             # [my_tree.delete(x) for x in my_tree.selection()]
 
         # Remove Items Button - Removes selected items in checkout - hold CTRL and click items you want removed in any order, the click 'Remove Items' button
@@ -201,18 +205,25 @@ class checkoutWindowClass:
         # Function - Calculates the total in the cart checkout
         def calcTotal():
 
-            # Initialize price at $0
-            price = 0
+            # find the price in each item and sum up
+            # For all items in the Treeview checkout list\
+            
+            # For Loop code
+            # # Initialize price at $0
+            # price = 0
+            # for item in my_tree.get_children():
+            #     # Get item info
+            #     item_info = my_tree.item(item)
+            #     # Get item quanity
+            #     quantity = item_info['values'][2]
+            #     # Price is updated to that specific item in the list multiplied by the quantity
+            #     price += float(item_info['values'][1]) * quantity
 
-            # Imperatively calculate item prices in for loop
-            # For all items in the Treeview checkout list
-            for item in my_tree.get_children():
-                # Get item info
-                item_info = my_tree.item(item)
-                # Get item quanity
-                quantity = item_info['values'][2]
-                # Price is updated to that specific item in the list multiplied by the quantity
-                price += float(item_info['values'][1]) * quantity
+            # # List Comprehension Code
+            # sum([float((my_tree.item(x)['values'][1]) * my_tree.item(x)['values'][2]) for x in my_tree.get_children()])
+
+            # Map-Lambda code
+            price = sum(list(map(lambda x: float(my_tree.item(x)['values'][1]) * my_tree.item(x)['values'][2], my_tree.get_children())))
 
             # Erase over any label that was on the bottom row previously
             eraseLabel = tk.Label(second_frame, text = "                                                                                 ")
