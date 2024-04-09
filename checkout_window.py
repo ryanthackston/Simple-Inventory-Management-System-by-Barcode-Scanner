@@ -187,9 +187,11 @@ class checkoutWindowClass:
 
         # Function - Removes selected items in checkout 
         def remove_selected():
-            x = my_tree.selection()
-            for record in x:
-                my_tree.delete(record)
+            # x = my_tree.selection()
+            # for record in x:
+            #     my_tree.delete(record)
+            list(map(lambda x: my_tree.delete(x), my_tree.selection()))
+            # [my_tree.delete(x) for x in my_tree.selection()]
 
         # Remove Items Button - Removes selected items in checkout - hold CTRL and click items you want removed in any order, the click 'Remove Items' button
         # Button uses remove_selected() function
